@@ -1,0 +1,285 @@
+{
+  "resource_version": 26,
+  "metadata": {
+    "version": 3,
+    "sources": [
+      {
+        "name": "default",
+        "kind": "postgres",
+        "tables": [
+          {
+            "table": {
+              "schema": "public",
+              "name": "project"
+            },
+            "object_relationships": [
+              {
+                "name": "user",
+                "using": {
+                  "foreign_key_constraint_on": "owner_id"
+                }
+              }
+            ]
+          },
+          {
+            "table": {
+              "schema": "public",
+              "name": "user"
+            },
+            "array_relationships": [
+              {
+                "name": "projects",
+                "using": {
+                  "foreign_key_constraint_on": {
+                    "column": "owner_id",
+                    "table": {
+                      "schema": "public",
+                      "name": "project"
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "configuration": {
+          "connection_info": {
+            "use_prepared_statements": true,
+            "database_url": {
+              "from_env": "HASURA_GRAPHQL_DATABASE_URL"
+            },
+            "isolation_level": "read-committed",
+            "pool_settings": {
+              "connection_lifetime": 600,
+              "retries": 1,
+              "idle_timeout": 180,
+              "max_connections": 50
+            }
+          }
+        }
+      }
+    ],
+    "actions": [
+      {
+        "name": "CreateProject",
+        "definition": {
+          "handler": "$FUNCTIONS_URL/create_project",
+          "output_type": "CreateProjectOutput",
+          "arguments": [
+            {
+              "name": "input",
+              "type": "CreateProjectInput!"
+            }
+          ],
+          "type": "mutation",
+          "kind": "synchronous"
+        }
+      },
+      {
+        "name": "DeleteProject",
+        "definition": {
+          "handler": "$FUNCTIONS_URL/delete_project",
+          "output_type": "DeleteProjectOutput",
+          "arguments": [
+            {
+              "name": "input",
+              "type": "DeleteProjectInput!"
+            }
+          ],
+          "type": "mutation",
+          "kind": "synchronous"
+        }
+      },
+      {
+        "name": "Signin",
+        "definition": {
+          "handler": "$FUNCTIONS_URL/signin",
+          "output_type": "SigninOutput",
+          "arguments": [
+            {
+              "name": "input",
+              "type": "SigninInput!"
+            }
+          ],
+          "type": "mutation",
+          "kind": "synchronous"
+        }
+      },
+      {
+        "name": "Signup",
+        "definition": {
+          "handler": "$FUNCTIONS_URL/signup",
+          "output_type": "SignupOutput",
+          "arguments": [
+            {
+              "name": "input",
+              "type": "SignupInput!"
+            }
+          ],
+          "type": "mutation",
+          "kind": "synchronous"
+        }
+      },
+      {
+        "name": "StartProject",
+        "definition": {
+          "handler": "$FUNCTIONS_URL/start_project",
+          "output_type": "StartProjectOutput",
+          "arguments": [
+            {
+              "name": "input",
+              "type": "StartProjectInput!"
+            }
+          ],
+          "type": "mutation",
+          "kind": "synchronous"
+        }
+      },
+      {
+        "name": "StopProject",
+        "definition": {
+          "handler": "$FUNCTIONS_URL/stop_project",
+          "output_type": "StopProjectOutput",
+          "arguments": [
+            {
+              "name": "input",
+              "type": "StopProjectInput!"
+            }
+          ],
+          "type": "mutation",
+          "kind": "synchronous"
+        }
+      }
+    ],
+    "custom_types": {
+      "input_objects": [
+        {
+          "name": "CreateProjectInput",
+          "fields": [
+            {
+              "name": "name",
+              "type": "String!"
+            }
+          ]
+        },
+        {
+          "name": "SigninInput",
+          "fields": [
+            {
+              "name": "email",
+              "type": "String!"
+            },
+            {
+              "name": "password",
+              "type": "String!"
+            }
+          ]
+        },
+        {
+          "name": "SignupInput",
+          "fields": [
+            {
+              "name": "email",
+              "type": "String!"
+            },
+            {
+              "name": "password",
+              "type": "String!"
+            }
+          ]
+        },
+        {
+          "name": "StartProjectInput",
+          "fields": [
+            {
+              "name": "id",
+              "type": "Int!"
+            }
+          ]
+        },
+        {
+          "name": "StopProjectInput",
+          "fields": [
+            {
+              "name": "id",
+              "type": "Int!"
+            }
+          ]
+        },
+        {
+          "name": "DeleteProjectInput",
+          "fields": [
+            {
+              "name": "id",
+              "type": "Int!"
+            }
+          ]
+        }
+      ],
+      "objects": [
+        {
+          "name": "CreateProjectOutput",
+          "fields": [
+            {
+              "name": "id",
+              "type": "Int!"
+            },
+            {
+              "name": "name",
+              "type": "String!"
+            },
+            {
+              "name": "url",
+              "type": "String!"
+            }
+          ]
+        },
+        {
+          "name": "SigninOutput",
+          "fields": [
+            {
+              "name": "accessToken",
+              "type": "String!"
+            }
+          ]
+        },
+        {
+          "name": "SignupOutput",
+          "fields": [
+            {
+              "name": "accessToken",
+              "type": "String!"
+            }
+          ]
+        },
+        {
+          "name": "StartProjectOutput",
+          "fields": [
+            {
+              "name": "ok",
+              "type": "Boolean!"
+            }
+          ]
+        },
+        {
+          "name": "StopProjectOutput",
+          "fields": [
+            {
+              "name": "ok",
+              "type": "Boolean!"
+            }
+          ]
+        },
+        {
+          "name": "DeleteProjectOutput",
+          "fields": [
+            {
+              "name": "ok",
+              "type": "Boolean!"
+            }
+          ]
+        }
+      ]
+    }
+  }
+}
